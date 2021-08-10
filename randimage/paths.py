@@ -6,11 +6,9 @@ class BasePath(object):
     def __init__(self, mask) -> None:
         self.mask = mask
         self.mask_shape = mask.shape
+        self.max_x, self.max_y = self.mask_shape[0] - 1, self.mask_shape[1] - 1
 
-
-class EPWTPath(BasePath):
-
-    def _get_usable_neighbors(self, point, used_points):
+    def _get_square_neighboorhood(self, point, used_points):
         x, y = point
         cx, cy = self.mask_shape[0] - x, self.mask_shape[1] - y
         max_radius = max(x, cx, y, cy)
@@ -37,14 +35,15 @@ class EPWTPath(BasePath):
             radius += 1
         return out
 
+
+class EPWTPath(BasePath):
     def get_path(self):
-        self.max_x, self.max_y = self.mask_shape[0] - 1, self.mask_shape[1] - 1
         x, y = random.randint(0, self.max_x), random.randint(0, self.max_y)
         cur_point = (x, y)
         out = [cur_point]
         used_points = {cur_point}
         while True:
-            neighbors = self._get_usable_neighbors(cur_point, used_points)
+            neighbors = self._get_square_neighboorhood(cur_point, used_points)
             if not neighbors:
                 break
             mindiff = np.inf
@@ -58,13 +57,26 @@ class EPWTPath(BasePath):
             cur_point = next_point
         return out
 
+class ProbabilisticPath(BasePath):
+    def get_path(self, rule=None):
+        if rule is None: rule = bin(random.randint(0,2**12))[2:]
+        x, y = random.randint(0, self.max_x), random.randint(0, self.max_y)
+        cur_point = (x, y)
+        out = [cur_point]
+        used_points = {cur_point}
+        while True:
+            neighbors = self._get_square_neighboorhood(cur_point, used_points)
+            if not neighbors:
+                break
+            neighbors = tuple(neighbors)
+            weights = np.zeros(len(neighbors))
+            for idx,n in enumerate(neighbors):
+                weights[idx] = self.mask[n]
+            next_point = random.choices(neighbors, weights=weights, k=1).pop()
+            out.append(next_point)
+            used_points.add(next_point)
+            cur_point = next_point
+        return out
 
-class RBEPWTPath(BasePath):
-    def __init__(self, *args, **kargs) -> None:
-        super().__init__(self, args, kargs)
 
-    def get_path(self):
-        pass
-
-
-PATHS = (EPWTPath,)
+PATHS = (EPWTPath,ProbabilisticPath)
