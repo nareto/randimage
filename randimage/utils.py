@@ -28,7 +28,9 @@ def show_img_list(img_list, shape, cmap='gray'):
         ax.imshow(img, cmap=cmap)
         ax.axis('off')
     # plt.tight_layout()
-    plt.show()
+    # plt.show()
+    fig.show()
+    return fig
 
 def get_random_image(img_size):
     mask = random.choice(MASKS)(img_size).get_mask()

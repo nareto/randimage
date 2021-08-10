@@ -6,15 +6,17 @@ from randimage import get_random_image, show_img_list
 %autoreload 2
 
 #%%
-SHAPE = (5, 8)
+SHAPE = (2, 8)
 SIZE = SHAPE[0]*SHAPE[1]
 imgs = []
-img_size = ((64,64))
+img_size = (64,64)
 for i in range(SIZE):
     img = get_random_image(img_size)
     imgs.append(img)
-show_img_list(imgs, SHAPE)
-
+figure = show_img_list(imgs, SHAPE)
+#%%
+# SAVE THE FIGURE
+figure.savefig('test.png')
 #%%
 # MANUALLY DEFINE MASK AND PATH MODULES
 from randimage import GaussianBlobMask, NormalMask, SaltPepperMask, EPWTPath, ProbabilisticPath, ColoredPath, show_array
