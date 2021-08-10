@@ -1,4 +1,7 @@
+import random
 import numpy as np
+from scipy.stats import multivariate_normal
+from scipy.ndimage import gaussian_filter
 
 
 class BaseMask(object):
@@ -14,8 +17,36 @@ class SaltPepperMask(BaseMask):
 
 class NormalMask(BaseMask):
     def get_mask(self):
-        return np.random.normal(0,1 ,size=self.shape)
+        return np.random.normal(0, 1, size=self.shape)
+
 
 class GaussianBlobMask(BaseMask):
-    def get_mask(self):
-        pass
+    def _get_gaussian_bell(self, center, sigma):
+        return lambda point: multivariate_normal(center, sigma*np.eye(2)).pdf(point)
+
+    def get_mask(self, ncenters=None, sigma=None):
+        if ncenters is None:
+            ncenters = random.randint(1, 5)
+        self.mask = np.zeros(self.shape)
+        if sigma is None:
+            sigma = random.randint(1, int(0.2*np.sqrt(self.mask.size)))
+        for center in range(ncenters + 1):
+            cx = random.randint(0, self.shape[0] - 1)
+            cy = random.randint(0, self.shape[1] - 1)
+            self.mask[cx, cy] = 1
+        self.mask = gaussian_filter(self.mask, sigma, mode='nearest')
+        return self.mask
+
+    def get_mask_slow(self, ncenters=None):
+        if ncenters is None:
+            ncenters = random.randint(0, 5)
+        self.mask = np.zeros(self.shape)
+        gaussians = []
+        for center in range(ncenters + 1):
+            cx = random.randint(0, self.shape[0])
+            cy = random.randint(0, self.shape[1])
+            sigma = random.randint(1, int(0.2*np.sqrt(self.mask.size)))
+            gaussians.append(self._get_gaussian_bell((cx, cy), sigma))
+        for idx, _ in np.ndenumerate(self.mask):
+            self.mask[idx] = sum([f(idx) for f in gaussians])
+        return self.mask
