@@ -31,11 +31,11 @@ class EPWTPath(BasePath):
             bottom_line = [(max(0, min(x-radius + i, self.max_x)),
                             min(y+radius, self.max_y)
                             ) for i in range(2*radius + 1)]
-            square_neighbors = set(left_line + right_line + top_line + bottom_line)
+            square_neighbors = set(
+                left_line + right_line + top_line + bottom_line)
             out = square_neighbors.difference(used_points)
             radius += 1
         return out
-
 
     def get_path(self):
         self.max_x, self.max_y = self.mask_shape[0] - 1, self.mask_shape[1] - 1
@@ -45,7 +45,8 @@ class EPWTPath(BasePath):
         used_points = {cur_point}
         while True:
             neighbors = self._get_usable_neighbors(cur_point, used_points)
-            if not neighbors: break
+            if not neighbors:
+                break
             mindiff = np.inf
             for neigh in neighbors:
                 diff = np.abs(self.mask[cur_point] - self.mask[neigh])
@@ -64,3 +65,6 @@ class RBEPWTPath(BasePath):
 
     def get_path(self):
         pass
+
+
+PATHS = (EPWTPath,)

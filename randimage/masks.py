@@ -21,13 +21,11 @@ class NormalMask(BaseMask):
 
 
 class GaussianBlobMask(BaseMask):
-    def _get_gaussian_bell(self, center, sigma):
-        return lambda point: multivariate_normal(center, sigma*np.eye(2)).pdf(point)
 
     def get_mask(self, ncenters=None, sigma=None):
-        if ncenters is None:
-            ncenters = random.randint(1, 5)
         self.mask = np.zeros(self.shape)
+        if ncenters is None:
+            ncenters = random.randint(1, int(0.5*np.sqrt(self.mask.size)))
         if sigma is None:
             sigma = random.randint(1, int(0.2*np.sqrt(self.mask.size)))
         for center in range(ncenters + 1):
@@ -37,9 +35,12 @@ class GaussianBlobMask(BaseMask):
         self.mask = gaussian_filter(self.mask, sigma, mode='nearest')
         return self.mask
 
+    def _get_gaussian_bell(self, center, sigma):
+        return lambda point: multivariate_normal(center, sigma*np.eye(2)).pdf(point)
+
     def get_mask_slow(self, ncenters=None):
         if ncenters is None:
-            ncenters = random.randint(0, 5)
+            ncenters = random.randint(1, int(0.5*np.sqrt(self.mask.size)))
         self.mask = np.zeros(self.shape)
         gaussians = []
         for center in range(ncenters + 1):
@@ -50,3 +51,6 @@ class GaussianBlobMask(BaseMask):
         for idx, _ in np.ndenumerate(self.mask):
             self.mask[idx] = sum([f(idx) for f in gaussians])
         return self.mask
+
+
+MASKS = (SaltPepperMask, NormalMask, GaussianBlobMask)

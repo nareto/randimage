@@ -1,6 +1,9 @@
+import random
 import matplotlib.pyplot as plt
 import numpy as np
-
+from .masks import MASKS
+from .paths import PATHS
+from .coloredpath import ColoredPath
 
 def show_array(array, cmap='gray'):
     plt.imshow(array, cmap=cmap)
@@ -26,3 +29,9 @@ def show_img_list(img_list, shape, cmap='gray'):
         ax.axis('off')
     # plt.tight_layout()
     plt.show()
+
+def get_random_image(img_size):
+    mask = random.choice(MASKS)(img_size).get_mask()
+    path = random.choice(PATHS)(mask).get_path()
+    img = ColoredPath(path, img_size).get_colored_path()
+    return img
