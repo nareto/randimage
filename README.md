@@ -1,5 +1,5 @@
-# RANDIMAGE
-## Create random images in python
+# randimage - create random images in python
+![randimage example](randimage.png)
 
 This library comes out of frustration: I could not find a simple way to generate random profile pictures for users of my app [riffandmatch](https://riffandmatch.com).
 
