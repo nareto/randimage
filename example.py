@@ -6,7 +6,7 @@ from randimage import get_random_image, show_img_list
 %autoreload 2
 
 #%%
-SHAPE = (2, 8)
+SHAPE = (4, 8)
 SIZE = SHAPE[0]*SHAPE[1]
 imgs = []
 img_size = (64,64)
