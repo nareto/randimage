@@ -2,8 +2,8 @@
 ## GENERATE SOME RANDOM IMAGES
 from randimage import get_random_image, show_img_list
 
-# %reload_ext autoreload
-# %autoreload 2
+%reload_ext autoreload
+%autoreload 2
 
 #%%
 SHAPE = (2, 8)
@@ -16,7 +16,7 @@ for i in range(SIZE):
 figure = show_img_list(imgs, SHAPE)
 #%%
 # SAVE THE FIGURE
-figure.savefig('test1.png')
+figure.savefig('randimage.png')
 #%%
 # MANUALLY DEFINE MASK AND PATH MODULES
 from randimage import GaussianBlobMask, NormalMask, SaltPepperMask, EPWTPath, ProbabilisticPath, ColoredPath, show_array
