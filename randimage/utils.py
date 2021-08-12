@@ -7,19 +7,21 @@ from .coloredpath import ColoredPath
 
 def show_array(array, cmap='gray'):
     plt.imshow(array, cmap=cmap)
+    plt.tight_layout()
     plt.axis('off')
     plt.show()
 
 
-def show_img_list(img_list, shape, cmap='gray'):
+def show_img_list(img_list, shape, cmap='gray', figsize=None):
     # figs, axis = plt.subplots(shape[0],shape[1])
     nrow,ncol = shape
+    if figsize is None: figsize = (ncol + 1, nrow + 1)
     fig, axis = plt.subplots(
         nrow, ncol,
         gridspec_kw=dict(wspace=0.0, hspace=0.0,
-                         top=1. - 0.5 / (nrow + 1), bottom=0.5 / (nrow + 1),
-                         left=0.5 / (ncol + 1), right=1 - 0.5 / (ncol + 1)),
-        figsize=(ncol + 1, nrow + 1),
+                         top=1. - 0.5 / (figsize[1]), bottom=0.5 / (figsize[1]),
+                         left=0.5 / (figsize[0]), right=1 - 0.5 / (figsize[0])),
+        figsize=figsize,
         sharey='row', sharex='col',  # optionally
     )
     for idx, img in enumerate(img_list):
@@ -27,8 +29,6 @@ def show_img_list(img_list, shape, cmap='gray'):
         ax = axis[row, col]
         ax.imshow(img, cmap=cmap)
         ax.axis('off')
-    # plt.tight_layout()
-    # plt.show()
     fig.show()
     return fig
 
