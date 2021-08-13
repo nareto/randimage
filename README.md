@@ -22,6 +22,7 @@ In `examples.py` you can find slightly more detailed code showing for example ho
     pip install randimage
 
 ## How it works
+You can read [this post](https://renatobudinich.com/create-random-images-with-randimage) on my blog for a full explanation of how the procedure works.
 
 The basic idea is to generate a random region-filling path for the image, then pick a colormap from `matplotlib` and use it to progressively color the pixels in the image as ordered by the path.
 

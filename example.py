@@ -17,16 +17,16 @@ figure = show_img_list(imgs, SHAPE)
 
 #%%
 # SAVE THE FIGURE
-figure = show_img_list(imgs, SHAPE, figsize=(200,100))
-figure.savefig('randimage-big3.jpg')
+# figure = show_img_list(imgs, SHAPE, figsize=(200,100))
+# figure.savefig('randimage.jpg',dpi=5)
 #%%
 # MANUALLY DEFINE MASK AND PATH MODULES
 from randimage import GaussianBlobMask, NormalMask, SaltPepperMask, EPWTPath, ProbabilisticPath, ColoredPath, show_array
 
 img_size = (280,280)
 # mask = SaltPepperMask(img_size).get_mask()
-mask = NormalMask(img_size).get_mask()
-# mask = GaussianBlobMask(img_size).get_mask(5)
+# mask = NormalMask(img_size).get_mask()
+mask = GaussianBlobMask(img_size).get_mask(5)
 
 # show_array(mask, cmap='gray')
 
@@ -39,17 +39,13 @@ cmap = 'Spectral'
 epwtimg = ColoredPath(epwtpath, mask.shape).get_colored_path(cmap)
 pimg = ColoredPath(ppath, mask.shape).get_colored_path(cmap)
 
-import numpy as np
-# gray_epwtimg = np.mean(epwtimg, axis=2)
 show_array(mask)
 show_array(epwtimg)
+show_array(pimg)
 #%%
-import matplotlib
-matplotlib.image.imsave("mask3.png", mask, cmap='gray')
-matplotlib.image.imsave("epwt3.png", epwtimg)
-
-#%%
-# SAVE THE IMAGE
-import matplotlib
-matplotlib.image.imsave("randimage1.png", img)
+# SAVE THE IMAGES
+# import matplotlib
+# matplotlib.image.imsave("mask.png", mask, cmap='gray')
+# matplotlib.image.imsave("epwt.png", epwtimg)
+# matplotlib.image.imsave("prob.png", pimg)
 
