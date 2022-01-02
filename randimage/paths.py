@@ -72,6 +72,8 @@ class ProbabilisticPath(BasePath):
             weights = np.zeros(len(neighbors))
             for idx,n in enumerate(neighbors):
                 weights[idx] = self.mask[n]
+            if np.sum(weights**2) == 0:
+                weights[random.randint(0,len(neighbors) - 1)] = 1
             next_point = random.choices(neighbors, weights=weights, k=1).pop()
             out.append(next_point)
             used_points.add(next_point)

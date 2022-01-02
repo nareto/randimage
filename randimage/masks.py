@@ -17,7 +17,8 @@ class SaltPepperMask(BaseMask):
 
 class NormalMask(BaseMask):
     def get_mask(self):
-        return np.random.normal(0, 1, size=self.shape)
+        mask = np.random.normal(0, 1, size=self.shape)
+        return mask - np.min(mask)
 
 
 class GaussianBlobMask(BaseMask):
