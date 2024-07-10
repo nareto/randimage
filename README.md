@@ -15,7 +15,7 @@ To save the image you can use `matplotlib`:
     import matplotlib
     matplotlib.image.imsave("randimage.png", img)
 
-In `examples.py` you can find slightly more detailed code showing for example how to manually choose and combine the masks and path finding procedures.
+In [examples.py](https://github.com/nareto/randimage/blob/master/example.py) you can find slightly more detailed code showing for example how to manually choose and combine the masks and path finding procedures.
 
 ## Installation
 
