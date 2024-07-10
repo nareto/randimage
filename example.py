@@ -2,8 +2,8 @@
 ## GENERATE SOME RANDOM IMAGES
 from randimage import get_random_image, show_img_list
 
-%reload_ext autoreload
-%autoreload 2
+#%reload_ext autoreload
+#%autoreload 2
 
 #%%
 SHAPE = (4, 8)
