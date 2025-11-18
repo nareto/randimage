@@ -12,7 +12,9 @@ class ColoredPath:
         if cmap is None: cmap = random.choice(self.COLORMAPS)
         mpl_cmap = plt.colormaps.get_cmap(cmap)
         path_length = len(self.path)
-        for idx,point in enumerate(self.path):
-            self.img[point] = mpl_cmap(idx/path_length)[:3]
+        indices = np.arange(path_length) / path_length
+        colors = mpl_cmap(indices)[:, :3]
+        for idx, point in enumerate(self.path):
+            self.img[point] = colors[idx]
         return self.img
 
